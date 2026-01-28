@@ -18,7 +18,9 @@ Assim, a cada passo de tempo discreto, uma determinada célula muda seu estado c
 <p align="center">
   <img src="Moore.png" width="300">
 </p>
-<center>**Figura 1. Vizinhança de Moore.**</center>
+<center>
+**Figura 1. Vizinhança de Moore.**
+</center>
 
 ## Da submissão
 
@@ -33,6 +35,7 @@ Os arquivos do **Git** devem estar na conta do cluster. Considerando esse cenár
 nvcc gol.cu -o gol.exec
 
 ---
+
 ### Observações:
 
 1. A linha 16 do código `gol.cu`: `#define BLOCK_SIZE 32` define o **tamanho do bloco**. O limite das **GPUs** da **NVIDIA** é de **1024 threads por bloco**, ou seja, $1024 = 32 \times 32$.
