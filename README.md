@@ -15,12 +15,10 @@ O **Jogo da Vida** é um **autômato celular** com um conjunto de regras determi
 
 Assim, a cada passo de tempo discreto, uma determinada célula muda seu estado conforme o conjunto de regras e a **vizinhança de Moore**. A vizinhança adotada é ilustrada pela **Fig. 1**. A célula central é a analisada com oito células vizinhas e a condição de contorno pode ser fixa, com valores de 0 ou 1, pode ser reflexiva ou periódica.
 
-<p align="center">
-  <img src="Moore.png" width="300">
-</p>
-<center>
-**Figura 1. Vizinhança de Moore.**
-</center>
+<figure style="text-align: center;">
+  <img src="Moore.png" width="300" alt="Vizinhança de Moore">
+  <figcaption>**Figura 1.** Vizinhança de Moore.</figcaption>
+</figure>
 
 ## Da submissão
 
@@ -34,8 +32,7 @@ Os arquivos do **Git** devem estar na conta do cluster. Considerando esse cenár
 ```bash
 nvcc gol.cu -o gol.exec
 
----
-
+```markdown
 ### Observações:
 
 1. A linha 16 do código `gol.cu`: `#define BLOCK_SIZE 32` define o **tamanho do bloco**. O limite das **GPUs** da **NVIDIA** é de **1024 threads por bloco**, ou seja, $1024 = 32 \times 32$.
