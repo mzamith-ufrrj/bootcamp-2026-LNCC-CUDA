@@ -31,8 +31,7 @@ Os arquivos do **Git** devem estar na conta do cluster. Considerando esse cenár
 
 ```bash
 nvcc gol.cu -o gol.exec
-
-```markdown
+```
 ### Observações:
 
 1. A linha 16 do código `gol.cu`: `#define BLOCK_SIZE 32` define o **tamanho do bloco**. O limite das **GPUs** da **NVIDIA** é de **1024 threads por bloco**, ou seja, $1024 = 32 \times 32$.
@@ -46,3 +45,4 @@ nvcc gol.cu -o gol.exec
             |----|-----|--> 1000 passos de tempo
             |----|--------> Altura de 1024 células
             |-------------> Largura de 2028 células
+```
