@@ -15,10 +15,10 @@ O **Jogo da Vida** é um **autômato celular** com um conjunto de regras determi
 
 Assim, a cada passo de tempo discreto, uma determinada célula muda seu estado conforme o conjunto de regras e a **vizinhança de Moore**. A vizinhança adotada é ilustrada pela **Fig. 1**. A célula central é a analisada com oito células vizinhas e a condição de contorno pode ser fixa, com valores de 0 ou 1, pode ser reflexiva ou periódica.
 
-<figure style="text-align: center;">
+<div align="center">
   <img src="Moore.png" width="300" alt="Vizinhança de Moore">
-  <figcaption>**Figura 1.** Vizinhança de Moore.</figcaption>
-</figure>
+  <p><strong>Figura 1.</strong> Vizinhança de Moore.</p>
+</div>
 
 ## Da submissão
 
