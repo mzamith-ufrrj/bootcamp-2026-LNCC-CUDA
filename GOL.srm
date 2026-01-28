@@ -1,0 +1,31 @@
+#!/usr/bin/bash
+#SBATCH --job-name=GOL               # Nome do job
+#SBATCH --partition=sequana_gpu_dev  # Partição de desenvolvimento para GPU
+#SBATCH --nodes=1                    # Quantidade de nós
+#SBATCH --ntasks-per-node=1          # Tarefas por nó
+#SBATCH --gres=gpu:1                 # <--- ESTA LINHA É OBRIGATÓRIA
+#SBATCH --time=00:20:00              # Tempo limite
+
+
+
+#Exibe os nós alocados para o Job
+echo $SLURM_JOB_NODELIST
+nodeset -e $SLURM_JOB_NODELIST
+
+cd $SLURM_SUBMIT_DIR
+
+#Configura os Módulos
+module load openmpi/gnu/4.1.2+cuda-11.2_sequana
+
+#Exibe as GPUs disponiveis
+#nvidia-smi
+#Compila
+nvcc gol.cu -o gol.exec
+
+#Configura o executavel
+EXEC=/scratch/treinamento/marcelo.zamith2/2026-LNCC-bootcamp/GOL/gol.exec
+
+#exibe informações sobre o executável
+#/usr/bin/ldd $EXEC
+
+srun $EXEC 2048 2048 100
