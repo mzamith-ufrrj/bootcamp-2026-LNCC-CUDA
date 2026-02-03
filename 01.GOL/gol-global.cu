@@ -16,17 +16,6 @@
 #define BLOCK_SIZE 32
 
 /**
- * @brief Macro para verificação de erros em chamadas da API CUDA.
- * @param call Chamada da função CUDA a ser verificada.
- */
-#define CHECK_ERROR(call) do {                              \
-   if( cudaSuccess != call) {                               \
-      fprintf(stderr,"CUDA ERROR:%s in file: %s in line: ", \
-         cudaGetErrorString(call),  __FILE__, __LINE__);    \
-         exit(EXIT_FAILURE);                                \
-   } } while (0)
-
-/**
  * @brief Inicializa o estado do gerador de números aleatórios (cuRAND) para cada thread.
  * * @param seed Semente para a inicialização do gerador.
  * @param d_state Ponteiro para o vetor de estados do cuRAND na memória do dispositivo.
@@ -139,10 +128,10 @@ int main (int argc, char **argv){
     printf("\t - Domínio(%d, %d, %d)\n", width, height, steps);
     fflush(stdout);
 
-    CHECK_ERROR(cudaDeviceReset());
-    CHECK_ERROR(cudaMalloc((void**)&d_buff0,  width * height * sizeof(int)));
-    CHECK_ERROR(cudaMalloc((void**)&d_buff1,  width * height * sizeof(int)));
-    CHECK_ERROR(cudaMalloc((void**)&d_States, width * height * sizeof(curandState)));
+    assert(cudaDeviceReset() == cudaSuccess);
+    assert(cudaMalloc((void**)&d_buff0,  width * height * sizeof(int)) == cudaSuccess);
+    assert(cudaMalloc((void**)&d_buff1,  width * height * sizeof(int)) == cudaSuccess);
+    assert(cudaMalloc((void**)&d_States, width * height * sizeof(curandState)) == cudaSuccess);
 
     h_buff = (int*) malloc( width * height * sizeof(int));
 
@@ -155,44 +144,44 @@ int main (int argc, char **argv){
     fflush(stdout);
 
     setup_rand_kernel<<<numBlocks, threadsPerBlock >>>(time (NULL), d_States);
-    CHECK_ERROR(cudaDeviceSynchronize());
+    assert(cudaDeviceSynchronize()  == cudaSuccess);
     
     //Condição inicial
     printf("\t - init condition\n");
     fflush(stdout);
 
     init_gol_kernel<<<numBlocks, threadsPerBlock >>>(d_States, d_buff0, 0.25);
-    CHECK_ERROR(cudaDeviceSynchronize());
+    assert(cudaDeviceSynchronize() == cudaSuccess);
 
     
     printf("\t - Steps:\n");
     fflush(stdout);
 
     for (int t = 0; t < steps; t++){
-        printf("\t\t B(%d, %d, %d) / T(%d, %d, %d)\n", numBlocks.x, numBlocks.y, numBlocks.z, threadsPerBlock.x, threadsPerBlock.y, threadsPerBlock.y);
-        fflush(stdout);
+        //printf("\t\t B(%d, %d, %d) / T(%d, %d, %d)\n", numBlocks.x, numBlocks.y, numBlocks.z, threadsPerBlock.x, threadsPerBlock.y, threadsPerBlock.y);
+        //fflush(stdout);
         GPU_Global_K<<<numBlocks, threadsPerBlock >>>(d_buff1, d_buff0);
         //GPU_Shared_K<<<numBlocks, threadsPerBlock >>>(d_buff1, d_buff0);
-        CHECK_ERROR(cudaDeviceSynchronize());
+        assert(cudaDeviceSynchronize() == cudaSuccess);
 
 
         int *swap = d_buff0;
         d_buff0 = d_buff1;
         d_buff1 = swap;
-        printf(" %d ", t);
-        fflush(stdout);
+        //printf(" %d ", t);
+        //fflush(stdout);
 
     }
     
 
-    CHECK_ERROR(cudaMemcpy(h_buff, d_buff0,  width * height * sizeof(int), cudaMemcpyDeviceToHost));
-    //print_gol(h_buff, width, height);
+    assert(cudaMemcpy(h_buff, d_buff0,  width * height * sizeof(int), cudaMemcpyDeviceToHost) == cudaSuccess);
+    print_gol(h_buff, width, height);
 
 
 
 
-    CHECK_ERROR(cudaFree(d_buff0));
-    CHECK_ERROR(cudaFree(d_buff1));
+    assert(cudaFree(d_buff0) == cudaSuccess);
+    assert(cudaFree(d_buff1) == cudaSuccess);
     free(h_buff);
     printf("\n\t\tFIM");
     return EXIT_SUCCESS;
